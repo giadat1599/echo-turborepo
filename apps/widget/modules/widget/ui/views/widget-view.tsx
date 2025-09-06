@@ -4,17 +4,19 @@ import { screenAtom } from '../../atoms/widget-atoms';
 import { WidgetScreen } from '../../types';
 import { WidgetAuthScreen } from '../screens/widget-auth-screen';
 import { useAtomValue } from 'jotai';
+import { WidgetErrorScreen } from '../screens/widget-error-screen';
+import { WidgetLoadingScreen } from '../screens/widget-loading-screen';
 
 interface WidgetViewProps {
-  organizationId: string;
+  organizationId?: string | null;
 }
 
 export function WidgetView({ organizationId }: WidgetViewProps) {
   const screen = useAtomValue(screenAtom);
 
   const screenComponents: Record<WidgetScreen, React.ReactNode> = {
-    error: <p>TODO</p>,
-    loading: <p>TODO: loading</p>,
+    error: <WidgetErrorScreen />,
+    loading: <WidgetLoadingScreen organizationId={organizationId} />,
     auth: <WidgetAuthScreen />,
     voice: <p>TODO: voice</p>,
     inbox: <p>TODO: inbox</p>,

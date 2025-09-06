@@ -14,15 +14,24 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from 'convex/react';
 import { api } from '@workspace/backend/_generated/api';
 import { Doc } from '@workspace/backend/_generated/dataModel';
+import { useAtom } from 'jotai';
+import {
+  contactSessionIdAtomFamily,
+  organizationIdAtom,
+} from '../../atoms/widget-atoms';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
   email: z.string().email({ message: 'Invalid email address' }),
 });
 
-const organizationId = '123';
-
 export function WidgetAuthScreen() {
+  const [organizationId] = useAtom(organizationIdAtom);
+
+  const [, seContactSessionId] = useAtom(
+    contactSessionIdAtomFamily(organizationId || '')
+  );
+
   const formMethods = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,7 +66,7 @@ export function WidgetAuthScreen() {
       metadata,
     });
 
-    console.log(contactSessionId);
+    seContactSessionId(contactSessionId);
   };
 
   return (
