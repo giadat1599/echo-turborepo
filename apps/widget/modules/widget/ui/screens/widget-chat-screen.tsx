@@ -12,14 +12,13 @@ import {
   screenAtom,
 } from '../../atoms/widget-atoms';
 import { WidgetHeader } from '../components/widget-header';
-import { ArrowLeftIcon, MenuIcon } from 'lucide-react';
+import { ArrowLeftIcon, LoaderCircleIcon, MenuIcon } from 'lucide-react';
 import { useAtom } from 'jotai';
 import { useAction, useQuery } from 'convex/react';
 import { api } from '@workspace/backend/_generated/api';
 import {
   AIConversation,
   AIConversationContent,
-  AIConversationScrollButton,
 } from '@workspace/ui/components/ai/conversation';
 import {
   AIInput,
@@ -33,10 +32,7 @@ import {
   AIMessageContent,
 } from '@workspace/ui/components/ai/message';
 import { AIResponse } from '@workspace/ui/components/ai/response';
-import {
-  AISuggestion,
-  AISuggestions,
-} from '@workspace/ui/components/ai/suggestion';
+
 import { Form, FormControl, FormField } from '@workspace/ui/components/form';
 import { useInfiniteScroll } from '@workspace/ui/hooks/use-infinite-scroll';
 import { InfiniteScrollTrigger } from '@workspace/ui/components/infinite-scroll-trigger';
@@ -123,12 +119,20 @@ export function WidgetChatScreen() {
       </WidgetHeader>
       <AIConversation>
         <AIConversationContent>
-          <InfiniteScrollTrigger
-            canLoadMore={canLoadMore}
-            isLoadingMore={isLoadingMore}
-            onLoadMore={handleLoadMore}
-            ref={topElementRef}
-          />
+          {!messages.isLoading && (
+            <InfiniteScrollTrigger
+              canLoadMore={canLoadMore}
+              isLoadingMore={isLoadingMore}
+              onLoadMore={handleLoadMore}
+              ref={topElementRef}
+            />
+          )}
+          {messages.isLoading && (
+            <div className="flex flex-col items-center justify-center gap-y-4 p-4 text-muted-foreground">
+              <LoaderCircleIcon className="animate-spin" />
+              <p className="text-sm">Loading messages...</p>
+            </div>
+          )}
           {toUIMessages(messages.results ?? [])?.map((message) => (
             <AIMessage
               from={message.role === 'user' ? 'user' : 'assistant'}

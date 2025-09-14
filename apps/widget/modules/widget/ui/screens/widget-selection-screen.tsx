@@ -14,6 +14,7 @@ import {
 import { useMutation } from 'convex/react';
 import { api } from '@workspace/backend/_generated/api';
 import { useState } from 'react';
+import { WidgetFooter } from '../components/widget-footer';
 
 export function WidgetSelectionScreen() {
   const [isPending, setIsPending] = useState(false);
@@ -79,6 +80,7 @@ export function WidgetSelectionScreen() {
           <ChevronRightIcon />
         </Button>
       </div>
+      <WidgetFooter />
     </>
   );
 }
