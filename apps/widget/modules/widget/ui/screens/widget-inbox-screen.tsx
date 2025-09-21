@@ -1,8 +1,8 @@
 'use client';
 
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { ArrowLeftIcon, LoaderCircleIcon } from 'lucide-react';
 import dayjs from 'dayjs';
+import { ArrowLeftIcon, LoaderCircleIcon } from 'lucide-react';
 import { WidgetHeader } from '../components/widget-header';
 import { WidgetFooter } from '../components/widget-footer';
 import { Button } from '@workspace/ui/components/button';

@@ -11,11 +11,11 @@ const configMap = {
     icon: CheckIcon,
     bgColor: 'bg-[#3FB62F]',
   },
-  escalated: {
+  unresolved: {
     icon: ArrowRightIcon,
     bgColor: 'bg-destructive',
   },
-  unresolved: {
+  escalated: {
     icon: ArrowUpIcon,
     bgColor: 'bg-yellow-500',
   },
