@@ -33,7 +33,7 @@ import {
 } from '@workspace/ui/components/ai/message';
 import { AIResponse } from '@workspace/ui/components/ai/response';
 
-import { Form, FormControl, FormField } from '@workspace/ui/components/form';
+import { Form, FormField } from '@workspace/ui/components/form';
 import { useInfiniteScroll } from '@workspace/ui/hooks/use-infinite-scroll';
 import { InfiniteScrollTrigger } from '@workspace/ui/components/infinite-scroll-trigger';
 import { DicebearAvatar } from '@workspace/ui/components/dicebear-avatar';
