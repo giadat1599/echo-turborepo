@@ -2,7 +2,7 @@
 
 import { LoaderCircleIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 
 import { WidgetHeader } from '../components/widget-header';
 import {

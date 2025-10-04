@@ -90,8 +90,12 @@ export const create = mutation({
     if (conversation.status === 'resolved') {
       throw new ConvexError({
         code: 'BAD_REQUEST',
-        message: 'Conversation  resolved',
+        message: 'Conversation resolved',
       });
+    }
+
+    if (conversation.status === 'unresolved') {
+      await ctx.db.patch(args.conversationId, { status: 'escalated' });
     }
 
     // TODO: implement subscription plan check

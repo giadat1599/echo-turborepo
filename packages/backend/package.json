@@ -17,8 +17,10 @@
     "@ai-sdk/openai": "^2.0.27",
     "@clerk/backend": "^2.12.1",
     "@convex-dev/agent": "^0.2.7",
+    "@convex-dev/rag": "^0.5.3",
     "ai": "^5.0.36",
     "convex": "^1.26.1",
+    "convex-helpers": "^0.1.104",
     "zod": "3.25.76"
   }
 }
