@@ -1,11 +1,16 @@
 import { ConvexError, v } from 'convex/values';
 
-import { action, mutation } from '../_generated/server';
+import { action, mutation, query } from '../_generated/server';
 import { guessMimeType } from '../lib/guessMimeType';
 import { extractTextContent } from '../lib/extractTextContent';
 import rag from '../system/ai/rag';
-import { contentHashFromArrayBuffer, vEntryId } from '@convex-dev/rag';
+import { contentHashFromArrayBuffer, Entry, vEntryId } from '@convex-dev/rag';
 import { Id } from '../_generated/dataModel';
+import { paginationOptsValidator } from 'convex/server';
+import {
+  convertEntryToPublicFiles,
+  EntryMetadata,
+} from '../lib/convertEntryToPublicFiles';
 
 export const deleteFile = mutation({
   args: {
@@ -115,8 +120,8 @@ export const addFile = action({
         uploadedBy: orgId,
         filename,
         category: category ?? null,
-        content: await contentHashFromArrayBuffer(bytes),
-      },
+      } as EntryMetadata,
+      contentHash: await contentHashFromArrayBuffer(bytes),
     });
 
     if (!created) {
@@ -127,6 +132,59 @@ export const addFile = action({
     return {
       url: await ctx.storage.getUrl(storageId),
       entryId,
+    };
+  },
+});
+
+export const list = query({
+  args: {
+    category: v.optional(v.string()),
+    paginationOpts: paginationOptsValidator,
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError({
+        code: 'UNAUTHORIZED',
+        message: 'Must be logged in',
+      });
+    }
+
+    const orgId = identity.orgId as string;
+
+    if (!orgId) {
+      throw new ConvexError({
+        code: 'UNAUTHORIZED',
+        message: 'Organization ID not found',
+      });
+    }
+
+    const namespace = await rag.getNamespace(ctx, {
+      namespace: orgId,
+    });
+
+    if (!namespace) {
+      return { page: [], isDone: true, continueCursor: '' };
+    }
+
+    const result = await rag.list(ctx, {
+      namespaceId: namespace.namespaceId,
+      paginationOpts: args.paginationOpts,
+    });
+
+    const files = await Promise.all(
+      result.page.map((entry) => convertEntryToPublicFiles(ctx, entry))
+    );
+
+    const filteredFiles = args.category
+      ? files.filter((file) => file.category === args.category)
+      : files;
+
+    return {
+      page: filteredFiles,
+      isDone: result.isDone,
+      continueCursor: result.continueCursor || '',
     };
   },
 });

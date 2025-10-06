@@ -1,7 +1,5 @@
+import { FilesView } from '@/modules/files/ui/views/files-view';
+
 export default function Page() {
-  return (
-    <div>
-      <h1>Files</h1>
-    </div>
-  );
+  return <FilesView />;
 }

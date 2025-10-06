@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as lib_convertEntryToPublicFiles from "../lib/convertEntryToPublicFiles.js";
 import type * as lib_extractTextContent from "../lib/extractTextContent.js";
 import type * as lib_guessMimeType from "../lib/guessMimeType.js";
 import type * as private_conversations from "../private/conversations.js";
@@ -39,6 +40,7 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  "lib/convertEntryToPublicFiles": typeof lib_convertEntryToPublicFiles;
   "lib/extractTextContent": typeof lib_extractTextContent;
   "lib/guessMimeType": typeof lib_guessMimeType;
   "private/conversations": typeof private_conversations;
