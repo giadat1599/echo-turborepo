@@ -7,6 +7,7 @@ import {
   escalateConversationTool,
   resolveConversationTool,
 } from '../system/ai/tools/resolveConversation';
+import { searchTool } from '../system/ai/tools/search';
 
 export const create = action({
   args: {
@@ -45,7 +46,7 @@ export const create = action({
     if (conversation.status === 'resolved') {
       throw new ConvexError({
         code: 'BAD_REQUEST',
-        message: 'Conversation  resolved',
+        message: 'Conversation resolved',
       });
     }
 
@@ -64,6 +65,7 @@ export const create = action({
           tools: {
             escalateConversationTool,
             resolveConversationTool,
+            searchTool,
           },
         }
       );
