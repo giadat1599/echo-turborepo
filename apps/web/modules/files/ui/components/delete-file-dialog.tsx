@@ -45,7 +45,7 @@ export function DeleteFileDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-screen-md">
         <DialogHeader>
           <DialogTitle>Delete File</DialogTitle>
           <DialogDescription>
